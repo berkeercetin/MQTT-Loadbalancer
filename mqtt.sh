@@ -18,7 +18,7 @@ check_broker() {
     fi
 }
 
-check_shell() {
+check_subs() {
     if [ "$(docker inspect -f '{{.State.Running}}' mqtt-subscriber 2>/dev/null)" == "true" ]; then
         echo "MQTT Sub çalışıyor."
     else
@@ -46,7 +46,7 @@ sleep 5
     send_message
 
     # MQTT subscriber'ları dinle
-    check_shell
+    check_subs
 
     # 5 saniye bekleyerek tekrar gönder
     
