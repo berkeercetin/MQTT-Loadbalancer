@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Docker container adı
-CONTAINER_NAME="mqtt-broker-service "
+#CONTAINER_NAME="mqtt-broker-service "
 
 # # MQTT broker container'ını başlatma fonksiyonu
 #  start_broker() {
@@ -29,26 +29,21 @@ check_subs() {
 
 send_message() {
      echo "Mesaj Gönderildi..." 
-     docker run -d --rm --name mqtt-publisher --link mqtt-broker-shell:eclipse-mosquitto eclipse-mosquitto mosquitto_pub -h eclipse-mosquitto -t test/topic -m "Hello MQTT"    # docker run -d --rm --name mqtt-publisher --link mqtt-broker-shell:eclipse-mosquitto -e INTERVAL=30 -e MESSAGE="'$RANDOM'" eclipse-mosquitto mosquitto_pub -h eclipse-mosquitto -t test/topic -m "$MESSAGE"
+        docker run --rm -it --network getstartedlab_mqtt-net eclipse-mosquitto mosquitto_pub -h mqtt-broker -t test/topic -m "Hello World"  #  docker run -d --rm --name mqtt-publisher --network getstartedLab_mqtt-net eclipse-mosquitto mosquitto_pub -h getstartedLab_mqtt-broker -t test/topic -m "Hello World"
 }
 
 listen_subscribers() {
     echo "MQTT subscriber'ları dinleme modunda..."
-    docker run -d --rm --name mqtt-subscriber --network host eclipse-mosquitto mosquitto_sub -h localhost -t test/topic
+docker run -d -it --network getstartedlab_mqtt-net eclipse-mosquitto mosquitto_sub -h mqtt-broker -t test/topic  
 }
-# Ana döngü
 while true; do
-sleep 5
+    check_subs
+    sleep 5
     # MQTT broker'ını kontrol et
     # check_broker
-
     # MQTT publisher'lara mesaj gönder
     send_message
-
     # MQTT subscriber'ları dinle
-    check_subs
-
     # 5 saniye bekleyerek tekrar gönder
-    
 done
 
