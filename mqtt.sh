@@ -1,22 +1,22 @@
 #!/bin/bash
 
 # Docker container adı
-CONTAINER_NAME="mqtt-broker-shell"
+CONTAINER_NAME="mqtt-broker-service "
 
-# MQTT broker container'ını başlatma fonksiyonu
- start_broker() {
-     echo "MQTT broker başlatılıyor..."
-     docker run -d --name $CONTAINER_NAME -p 1883:1883 eclipse-mosquitto
- }
+# # MQTT broker container'ını başlatma fonksiyonu
+#  start_broker() {
+#      echo "MQTT broker başlatılıyor..."
+#      docker run -d --name $CONTAINER_NAME -p 1883:1883 eclipse-mosquitto
+#  }
 
-check_broker() {
-    if [ "$(docker inspect -f '{{.State.Running}}' $CONTAINER_NAME 2>/dev/null)" == "true" ]; then
-        echo "MQTT broker çalışıyor."
-    else
-        echo "MQTT broker çöktü. Yeniden başlatılıyor..."
-        start_broker
-    fi
-}
+# check_broker() {
+#     if [ "$(docker inspect -f '{{.State.Running}}' $CONTAINER_NAME 2>/dev/null)" == "true" ]; then
+#         echo "MQTT broker çalışıyor."
+#     else
+#         echo "MQTT broker çöktü. Yeniden başlatılıyor..."
+#         start_broker
+#     fi
+# }
 
 check_subs() {
     if [ "$(docker inspect -f '{{.State.Running}}' mqtt-subscriber 2>/dev/null)" == "true" ]; then
@@ -40,7 +40,7 @@ listen_subscribers() {
 while true; do
 sleep 5
     # MQTT broker'ını kontrol et
-    check_broker
+    # check_broker
 
     # MQTT publisher'lara mesaj gönder
     send_message
