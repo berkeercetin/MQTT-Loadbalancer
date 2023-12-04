@@ -1,17 +1,62 @@
-#docker-compose up --build
+# #docker-compose up --build
+# version: "3.8"
+
+# # networks:
+# #   mqtt-net:
+# #     driver: overlay
+# #     attachable: true
+# #     ipam:
+# #       driver: default
+# #       config:
+# #         - subnet: 172.100.10.0/24
+
+# networks:
+#   getstartedlab_mqtt-net:
+#     external: true
+
+# services:
+#   mqtt-broker-2:
+#     image: eclipse-mosquitto:latest
+#     user: mosquitto
+#     deploy:
+#       replicas: 3
+#       restart_policy:
+#         condition: on-failure
+#     volumes:
+#       - type: bind
+#           source: ./config/
+#           target: /mosquitto/config/
+#           read_only: false
+#       - type: bind
+#           source: ./log/
+#           target: /mosquitto/log/
+#           read_only: false
+#       - type: volume
+#           source: data
+#           target: /mosquitto/data/
+#     ports:
+#       - "1803:1803"
+#       - "9011:9011"
+#     # networks:
+#     #   - mqtt-net
+#     networks:
+#       - getstartedlab_mqtt-net
+#     extra_hosts:
+#       - "mqtt-broker:172.100.10.20"
+
+# volumes:
+#   data:
+#     name: "mqtt-broker-data"
+
+
 version: "3.8"
 
 networks:
-  mqtt-net:
-    driver: overlay
-    attachable: true
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.100.10.0/24
+  getstartedlab_mqtt-net:
+    external: true
 
 services:
-  mqtt-broker:
+  mqtt-broker-2:
     image: eclipse-mosquitto:latest
     user: mosquitto
     deploy:
@@ -19,16 +64,24 @@ services:
       restart_policy:
         condition: on-failure
     volumes:
-      - ./config/:/mosquitto/config/
-      - ./log/:/mosquitto/log/
-      - data:/mosquitto/data/
+      - type: bind
+        source: ./config/
+        target: /mosquitto/config/
+        read_only: false
+      - type: bind
+        source: ./log/
+        target: /mosquitto/log/
+        read_only: false
+      - type: volume
+        source: data
+        target: /mosquitto/data/
     ports:
-      - "1883:1883"
-      - "9001:9001"
+      - "1803:1803"
+      - "9011:9011"
     networks:
-      - mqtt-net
+      - getstartedlab_mqtt-net
     extra_hosts:
-      - "mqtt-broker:172.100.10.10"
+      - "mqtt-broker:172.100.10.20"
 
 volumes:
   data:
