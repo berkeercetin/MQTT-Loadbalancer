@@ -1,88 +1,31 @@
-# #docker-compose up --build
-# version: "3.8"
-
-# # networks:
-# #   mqtt-net:
-# #     driver: overlay
-# #     attachable: true
-# #     ipam:
-# #       driver: default
-# #       config:
-# #         - subnet: 172.100.10.0/24
-
-# networks:
-#   getstartedlab_mqtt-net:
-#     external: true
-
-# services:
-#   mqtt-broker-2:
-#     image: eclipse-mosquitto:latest
-#     user: mosquitto
-#     deploy:
-#       replicas: 3
-#       restart_policy:
-#         condition: on-failure
-#     volumes:
-#       - type: bind
-#           source: ./config/
-#           target: /mosquitto/config/
-#           read_only: false
-#       - type: bind
-#           source: ./log/
-#           target: /mosquitto/log/
-#           read_only: false
-#       - type: volume
-#           source: data
-#           target: /mosquitto/data/
-#     ports:
-#       - "1803:1803"
-#       - "9011:9011"
-#     # networks:
-#     #   - mqtt-net
-#     networks:
-#       - getstartedlab_mqtt-net
-#     extra_hosts:
-#       - "mqtt-broker:172.100.10.20"
-
-# volumes:
-#   data:
-#     name: "mqtt-broker-data"
-
-
-version: "3.8"
-
-networks:
-  getstartedlab_mqtt-net:
-    external: true
+version: '3'
 
 services:
+  mqtt-broker-1:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt-broker-1
+    ports:
+      - "5005:5005"
+    networks:
+      - mqtt-network
+
   mqtt-broker-2:
     image: eclipse-mosquitto:latest
-    user: mosquitto
-    deploy:
-      replicas: 3
-      restart_policy:
-        condition: on-failure
-    volumes:
-      - type: bind
-        source: ./config/
-        target: /mosquitto/config/
-        read_only: false
-      - type: bind
-        source: ./log/
-        target: /mosquitto/log/
-        read_only: false
-      - type: volume
-        source: data
-        target: /mosquitto/data/
+    container_name: mqtt-broker-2
     ports:
-      - "1803:1803"
-      - "9011:9011"
+      - "5006:5006"  # farklı bir port kullanarak ikinci broker'ı başlat
     networks:
-      - getstartedlab_mqtt-net
-    extra_hosts:
-      - "mqtt-broker:172.100.10.20"
+      - mqtt-network
+      
+  haproxy-lb:
+    image: berke/haproxy:v1
+    ports:
+      - "1883:1883"
+      - "8082:8082"
+    networks:
+      - mqtt-network
+      
 
-volumes:
-  data:
-    name: "mqtt-broker-data"
+networks:
+  mqtt-network:
+    driver: bridge
