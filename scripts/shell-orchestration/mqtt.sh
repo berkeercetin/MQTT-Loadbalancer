@@ -34,7 +34,7 @@ send_message() {
 
 listen_subscribers() {
     echo "MQTT subscriber'ları dinleme modunda..."
-docker run -d -it --network getstartedlab_mqtt-net eclipse-mosquitto mosquitto_sub -h mqtt-broker -t test/topic  
+docker run -d -it --network getstartedlab_mqtt-net eclipse-mosquitto mosquitto_sub -h 127.0.0.1 -t test/nem  
 }
 while true; do
     check_subs
@@ -52,4 +52,5 @@ done
 #   docker run  -d -rm --network getstartedlab_mqtt-net eclipse-mosquitto mosquitto_sub -h haproxy-lb -p 1883 -t test/nem
 #   docker run --rm -it --network getstartedlab_mqtt-net eclipse-mosquitto mosquitto_pub -h haproxy-lb -p 1884 -t test/topic -m "Hello World"
 
-  docker run  -d  --network getstartedlab_mqtt-net eclipse-mosquitto mosquitto_sub -h haproxy-lb-swarm -p 1883 -t test/nem
+  docker run  -d -it --network getstartedLab_mqtt-net eclipse-mosquitto mosquitto_sub -h haproxy-lb-swarm -p 1883 -t test/nem
+ docker run  --network getstartedlab_mqtt-net eclipse-mosquitto mosquitto_pub -h haproxy-lb-swarm -p 1883 -t test/nem -m "Hello World"
