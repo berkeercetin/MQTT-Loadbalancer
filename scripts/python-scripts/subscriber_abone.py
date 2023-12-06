@@ -5,8 +5,8 @@ def on_message (client , userdata , msg):
         
 def on_connect(client, userdata, flags, rc):
     if (rc == 0): 
-        client.subscribe(topic = "merhaba" , qos = 2)
-        print("İstemci merhaba konusuna abone olmuştur.")
+        client.subscribe(topic = "test/sicaklik" , qos = 0)
+        print("İstemci sicaklik konusuna abone olmuştur.")
     else:
         client.loop.stop()
                                                  

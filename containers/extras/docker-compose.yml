@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  no_swarm_messager:
+    image: eclipse-mosquitto
+    command: mosquitto_pub -h haproxy-lb -p 1883 -t test/nem -m "nem yuksek"
+    networks:
+      - mosquitto_mqtt-network
+
+networks:
+  mosquitto_mqtt-network:
+    external: true
+# docker-compose up --scale no_swarm_messager=25 -d

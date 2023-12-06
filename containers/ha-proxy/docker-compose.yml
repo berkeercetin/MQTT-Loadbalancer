@@ -1,0 +1,14 @@
+version: "3.3"
+
+services:
+  haproxy-lb:
+    image: berke/haproxy:v2
+    ports:
+      - "1883:1883"
+      - "8081:8081"
+    networks:
+      - getstartedLab_mqtt-net
+
+networks:
+  getstartedLab_mqtt-net :
+    external: true

@@ -40,7 +40,7 @@
 
 #   for i in {1..10}
 #   do
-#      docker run -d -it --name mqtt-subscriber-sicaklik-${i} --network mosquitto_mqtt-network eclipse-mosquitto mosquitto_sub -h haproxy-lb -p 1883 -t test/sicaklik
+#      docker run -d -it --name mqtt-subscriber-sicaklik-${i} --network getstartedLab_mqtt-net eclipse-mosquitto mosquitto_sub -h 127.0.0.1 -p 1883 -t test/nem
 #   done
 
 #   for i in {1..100}
@@ -50,12 +50,17 @@
 #   docker run --rm -it --network getstartedLab_mqtt-net eclipse-mosquitto mosquitto_pub -h haproxy-lb -p 1883 -t test/nem -m "nem yuksek"
 #  done
 
-for i in {1..10}
-do
-  #docker run --rm -d --network  mosquitto_mqtt-network  eclipse-mosquitto mosquitto_pub -h haproxy-lb -p 1883 -t test/sicaklik -m "15 derece" &
-  docker run --rm -d --network  mosquitto_mqtt-network  eclipse-mosquitto mosquitto_pub -h haproxy-lb -p 1883 -t test/nem -m "nem yuksek" &
-done
+# for i in {4..25}
+# do
+#   #docker run --rm -d --network  mosquitto_mqtt-network  eclipse-mosquitto mosquitto_pub -h haproxy-lb -p 1883 -t test/sicaklik -m "15 derece" &
+#   docker run --name no_swarm_messager${i}  --network  mosquitto_mqtt-network eclipse-mosquitto mosquitto_pub -h haproxy-lb -p 1883 -t test/nem -m "nem yuksek"
+#   #docker run --rm -d --network  getstartedLab_mqtt-net eclipse-mosquitto mosquitto_pub -h haproxy-lb-swarm -p 1883 -t test/nem -m "nem yuksek" 
+# done
 
 
 # Tüm işlemlerin bitmesini bekleyin
-wait
+#wait
+
+for i in {1..25}; do
+  docker start no_swarm_messager${i}
+done

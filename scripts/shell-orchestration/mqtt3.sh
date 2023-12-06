@@ -25,7 +25,7 @@ send_message() {
 
 listen_subscribers() {
     echo "MQTT subscriber'ları dinleme modunda..."
-    docker run -d --rm --name mqtt-subscriber -h localhost eclipse-mosquitto mosquitto_sub -h $SERVICE_NAME -t test/topic
+    docker run -d --rm --name mqtt-subscriber-no-swarm --network mosquitto_mqtt-network eclipse-mosquitto mosquitto_sub -h haproxy-lb -t test/topic
 }
 
 # Ana döngü

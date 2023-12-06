@@ -1,0 +1,70 @@
+version: "3.8"
+
+networks:
+  mqtt-net:
+    driver: overlay
+    attachable: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.100.10.0/24
+
+services:
+  mqtt-broker-swarm-cluster:
+    image: eclipse-mosquitto:latest
+    user: mosquitto
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - type: bind
+        source: ./config/
+        target: /mosquitto/config/
+        read_only: false
+      - type: bind
+        source: ./log/
+        target: /mosquitto/log/
+        read_only: false
+      - type: volume
+        source: data
+        target: /mosquitto/data/
+    ports:
+      - "5005:5005"
+      - "9011:9011"
+    networks:
+      - mqtt-net
+    extra_hosts:
+      - "mqtt-broker:172.100.10.10"
+
+  mqtt-broker-swarm-cluster-2:
+    image: eclipse-mosquitto:latest
+    user: mosquitto
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - type: bind
+        source: ./config2/
+        target: /mosquitto/config/
+        read_only: false
+      - type: bind
+        source: ./log/
+        target: /mosquitto/log/
+        read_only: false
+      - type: volume
+        source: data
+        target: /mosquitto/data/
+    ports:
+      - "5006:5006"
+      - "9012:9012"
+    networks:
+      - mqtt-net
+    extra_hosts:
+      - "mqtt-broker:172.100.10.20"
+      
+
+volumes:
+  data:
+    name: "mqtt-broker-data"
+
+#docker stack deploy -c docker-compose.yml getstartedLab   

@@ -29,3 +29,5 @@ services:
 networks:
   mqtt-network:
     driver: bridge
+
+    #docker-compose up -d
