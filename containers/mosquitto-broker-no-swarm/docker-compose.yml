@@ -4,6 +4,11 @@ services:
   mqtt-broker-1:
     image: eclipse-mosquitto:latest
     container_name: mqtt-broker-1
+    volumes:
+    - type: bind
+      source: ./config/
+      target: /mosquitto/config/
+      read_only: false
     ports:
       - "5005:5005"
     networks:
@@ -12,18 +17,23 @@ services:
   mqtt-broker-2:
     image: eclipse-mosquitto:latest
     container_name: mqtt-broker-2
+    volumes:
+    - type: bind
+      source: ./config2/
+      target: /mosquitto/config/
+      read_only: false
     ports:
       - "5006:5006"  # farklı bir port kullanarak ikinci broker'ı başlat
     networks:
       - mqtt-network
       
-  haproxy-lb:
-    image: berke/haproxy:v1
-    ports:
-      - "1883:1883"
-      - "8082:8082"
-    networks:
-      - mqtt-network
+  # haproxy-lb:
+  #   image: berke/haproxy:v1
+  #   ports:
+  #     - "1883:1883"
+  #     - "8082:8082"
+  #   networks:
+  #     - mqtt-network
       
 
 networks:
