@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  mqtt-broker-1:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt-broker-1
+    volumes:
+    - type: bind
+      source: ./config/
+      target: /mosquitto/config/
+      read_only: false
+    ports:
+      - "5005:5005"
+    networks:
+      - mqtt-network
+
+networks:
+  mqtt-network:
+    driver: bridge
+ # docker create network mqtt-network
+ # docker-compose up -d
